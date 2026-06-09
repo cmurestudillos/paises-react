@@ -1,13 +1,225 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* =====================
+   Palette — #1CB5E0 cyan → #000851 navy
+   ===================== */
+:root {
+  --grad-start: #1cb5e0;
+  --grad-end: #000851;
+  --primary-color: #1cb5e0;
+  --primary-dark: #000851;
+  --surface-bg: #f0f5ff;
+  --surface-card: #ffffff;
+  --text-color: #000851;
+  --text-secondary: #5b6a8a;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f0f5ff;
+  color: #000851;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* =====================
+   PrimeReact — Card
+   ===================== */
+.p-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 8, 81, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 8, 81, 0.06) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  height: 100%;
+}
+
+.p-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 8, 81, 0.14), 0 0 0 1.5px rgba(28, 181, 224, 0.5) !important;
+  border-color: rgba(28, 181, 224, 0.5) !important;
+}
+
+.p-card .p-card-header {
+  padding: 0 !important;
+  line-height: 0;
+}
+
+.p-card .p-card-body {
+  padding: 1rem !important;
+}
+
+.p-card .p-card-title {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #000851 !important;
+  margin-bottom: 0.2rem !important;
+  line-height: 1.4;
+}
+
+.p-card .p-card-subtitle {
+  font-size: 0.72rem !important;
+  color: #5b6a8a !important;
+  margin-bottom: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.p-card .p-card-content {
+  padding: 0.75rem 0 0 !important;
+}
+
+/* =====================
+   PrimeReact — InputText
+   ===================== */
+.p-inputtext {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 8, 81, 0.18) !important;
+  color: #000851 !important;
+  border-radius: 10px !important;
+  font-size: 0.9rem !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.p-inputtext:enabled:focus {
+  border-color: #1cb5e0 !important;
+  box-shadow: 0 0 0 3px rgba(28, 181, 224, 0.2) !important;
+}
+
+.p-inputtext:enabled:hover {
+  border-color: rgba(0, 8, 81, 0.35) !important;
+}
+
+.p-inputtext::placeholder {
+  color: #a0aec0 !important;
+}
+
+/* =====================
+   PrimeReact — Dropdown
+   ===================== */
+.p-dropdown {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 8, 81, 0.18) !important;
+  border-radius: 10px !important;
+  min-width: 200px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.p-dropdown:not(.p-disabled):hover {
+  border-color: rgba(0, 8, 81, 0.35) !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: #1cb5e0 !important;
+  box-shadow: 0 0 0 3px rgba(28, 181, 224, 0.2) !important;
+}
+
+.p-dropdown .p-dropdown-label {
+  padding: 0.65rem 1rem !important;
+  color: #000851 !important;
+  background: transparent !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: #a0aec0 !important;
+}
+
+.p-dropdown .p-dropdown-trigger {
+  color: #5b6a8a !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+  color: #5b6a8a !important;
+}
+
+.p-dropdown-panel {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 8, 81, 0.12) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 40px rgba(0, 8, 81, 0.12) !important;
+  margin-top: 4px !important;
+}
+
+.p-dropdown-items {
+  padding: 0.35rem !important;
+}
+
+.p-dropdown-item {
+  color: #000851 !important;
+  border-radius: 6px !important;
+  font-size: 0.9rem !important;
+  padding: 0.55rem 0.85rem !important;
+}
+
+.p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  background: rgba(28, 181, 224, 0.08) !important;
+  color: #000851 !important;
+}
+
+.p-dropdown-item.p-highlight {
+  background: rgba(28, 181, 224, 0.15) !important;
+  color: #0369a1 !important;
+}
+
+/* =====================
+   PrimeReact — Button
+   ===================== */
+.p-button {
+  border-radius: 10px !important;
+  height: 42px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-secondary) {
+  background: linear-gradient(90deg, #1cb5e0 0%, #000851 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+.p-button:not(.p-button-outlined):not(.p-button-secondary):not(:disabled):hover {
+  opacity: 0.88;
+  box-shadow: 0 4px 18px rgba(28, 181, 224, 0.4) !important;
+}
+
+.p-button.p-button-secondary.p-button-outlined {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 8, 81, 0.2) !important;
+  color: #5b6a8a !important;
+}
+
+.p-button.p-button-secondary.p-button-outlined:not(:disabled):hover {
+  background: rgba(0, 8, 81, 0.04) !important;
+  border-color: rgba(0, 8, 81, 0.4) !important;
+  color: #000851 !important;
+}
+
+.p-button:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+}
+
+/* =====================
+   PrimeReact — Skeleton
+   ===================== */
+.p-skeleton {
+  background: rgba(0, 8, 81, 0.07) !important;
+  border-radius: 6px !important;
+}
+
+.p-skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent) !important;
 }

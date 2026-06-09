@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import url from '../../api/endpoint';
-import { Accordion, Card, Form, Row, Col, Button } from 'react-bootstrap';
+import { Card } from 'primereact/card';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import { Button } from 'primereact/button';
+import { Skeleton } from 'primereact/skeleton';
+
+const SKELETON_ARRAY = Array(6).fill(0);
+
+const formatPoblacion = pop => {
+  if (pop >= 1_000_000) return (pop / 1_000_000).toFixed(1) + 'M';
+  if (pop >= 1_000) return Math.round(pop / 1_000) + 'K';
+  return pop.toString();
+};
 
 const HomeComponent = () => {
   const [paises, setPaises] = useState([]);
@@ -9,68 +21,67 @@ const HomeComponent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [busqueda, setBusqueda] = useState('');
-  const [continenteSeleccionado, setContinenteSeleccionado] = useState('');
+  const [regionSeleccionada, setRegionSeleccionada] = useState(null);
+  const [regiones, setRegiones] = useState([]);
 
   useEffect(() => {
     axios
       .get(url.endpoint)
       .then(res => {
-        if (res.data && res.data.success && res.data.data) {
-          setPaises(res.data.data);
-          setPaisesFiltrados(res.data.data);
+        const data = res.data?.data ?? res.data;
+        if (Array.isArray(data)) {
+          setPaises(data);
+          setPaisesFiltrados(data);
+          const regs = [...new Set(data.map(p => p.region).filter(Boolean))].sort();
+          setRegiones(regs);
         }
         setLoading(false);
       })
       .catch(err => {
         console.error('Error al cargar los países:', err);
-        setError('Error al cargar los países');
+        setError('Error al cargar los países. Inténtalo de nuevo más tarde.');
         setLoading(false);
       });
   }, []);
 
-  // Efecto para filtrar países cuando cambia la búsqueda o el continente
   useEffect(() => {
-    let resultados = paises;
-
-    // Filtrar por búsqueda
+    let res = paises;
     if (busqueda) {
-      resultados = resultados.filter(
-        pais =>
-          pais.name.common.toLowerCase().includes(busqueda.toLowerCase()) ||
-          pais.name.official.toLowerCase().includes(busqueda.toLowerCase()) ||
-          (pais.capital && pais.capital[0] && pais.capital[0].toLowerCase().includes(busqueda.toLowerCase()))
+      const q = busqueda.toLowerCase();
+      res = res.filter(
+        p =>
+          p.name.common.toLowerCase().includes(q) ||
+          p.name.official.toLowerCase().includes(q) ||
+          (p.capital?.[0] && p.capital[0].toLowerCase().includes(q))
       );
     }
-
-    // Filtrar por continente
-    if (continenteSeleccionado) {
-      resultados = resultados.filter(pais => pais.continents && pais.continents.includes(continenteSeleccionado));
+    if (regionSeleccionada) {
+      res = res.filter(p => p.region === regionSeleccionada);
     }
-
-    setPaisesFiltrados(resultados);
-  }, [busqueda, continenteSeleccionado, paises]);
-
-  // Obtener lista única de continentes
-  const obtenerContinentes = () => {
-    const continentes = new Set();
-    paises.forEach(pais => {
-      if (pais.continents) {
-        pais.continents.forEach(cont => continentes.add(cont));
-      }
-    });
-    return Array.from(continentes).sort();
-  };
+    setPaisesFiltrados(res);
+  }, [busqueda, regionSeleccionada, paises]);
 
   const limpiarFiltros = () => {
     setBusqueda('');
-    setContinenteSeleccionado('');
+    setRegionSeleccionada(null);
   };
 
   if (loading) {
     return (
-      <div className="container mt-4 text-center">
-        <div className="spinner-border text-primary" role="status">
-          <span className="sr-only">Cargando...</span>
+      <div className="main-container">
+        <div className="paises-grid">
+          {SKELETON_ARRAY.map((_, i) => (
+            <Card key={i} className="pais-card">
+              <Skeleton width="100%" height="155px" />
+              <Skeleton width="75%" height="1.2rem" className="mt-2" />
+              <Skeleton width="55%" height="0.9rem" className="mt-1" />
+              <div className="pais-badges mt-2">
+                <Skeleton width="70px" height="1.6rem" borderRadius="1rem" />
+                <Skeleton width="60px" height="1.6rem" borderRadius="1rem" />
+                <Skeleton width="65px" height="1.6rem" borderRadius="1rem" />
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     );
@@ -78,144 +89,97 @@ const HomeComponent = () => {
 
   if (error) {
     return (
-      <div className="container mt-4 text-center">
-        <div className="alert alert-danger" role="alert">
-          {error}
+      <div className="main-container">
+        <div className="error-container">
+          <i className="pi pi-exclamation-circle error-icon" />
+          <p>{error}</p>
         </div>
       </div>
     );
   }
 
-  const listarPaises = paisesFiltrados.map((pais, index) => {
-    return (
-      <Accordion defaultActiveKey="0" key={pais.cca3 || index}>
-        <Card.Header className="mb-0">
-          <Accordion.Toggle className="btn btn-4 cloudy-knoxville-gradient w-50" eventKey={index + 1}>
-            {pais.name.common}
-          </Accordion.Toggle>
-          <img
-            src={pais.flags.svg}
-            className="float-right rounded-circle shadow border"
-            title={pais.name.common}
-            alt={pais.name.common}
-            width="55"
-            height="55"
-          />
-        </Card.Header>
-        <hr></hr>
-        <Accordion.Collapse eventKey={index + 1}>
-          <Card.Body>
-            <div className="row">
-              <div className="col">
-                <strong>Capital: </strong>
-                <span className="badge badge-pill badge-success">
-                  <i className="fas fa-city" aria-hidden="true"></i>
-                  {pais.capital && pais.capital.length > 0 ? pais.capital[0] : 'N/A'}
-                </span>
-              </div>
-              <div className="col">
-                <strong>Población: </strong>
-                <span className="badge badge-pill badge-primary">
-                  <i className="fas fa-users" aria-hidden="true"></i>
-                  {pais.population ? pais.population.toLocaleString('es-ES') : 'N/A'}
-                </span>
-              </div>
-              <div className="col">
-                <strong>Subregión: </strong>
-                <span className="badge badge-pill badge-warning">
-                  <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
-                  {pais.subregion || 'N/A'}
-                </span>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col">
-                <strong>Región: </strong>
-                <span className="badge badge-pill badge-info">
-                  <i className="fas fa-globe" aria-hidden="true"></i>
-                  {pais.region || 'N/A'}
-                </span>
-              </div>
-              <div className="col">
-                <strong>Área: </strong>
-                <span className="badge badge-pill badge-secondary">
-                  <i className="fas fa-map" aria-hidden="true"></i>
-                  {pais.area ? `${pais.area.toLocaleString('es-ES')} km²` : 'N/A'}
-                </span>
-              </div>
-              <div className="col">
-                <strong>Idiomas: </strong>
-                <span className="badge badge-pill badge-dark">
-                  <i className="fas fa-language" aria-hidden="true"></i>
-                  {pais.languages ? Object.values(pais.languages).join(', ') : 'N/A'}
-                </span>
-              </div>
-            </div>
-          </Card.Body>
-        </Accordion.Collapse>
-      </Accordion>
-    );
-  });
-
   return (
-    <div className="container mt-4 mb-4">
-      <h2 className="text-center mb-4">Países del Mundo</h2>
-
+    <div className="main-container">
       {/* Filtros */}
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Row>
-            <Col md={5}>
-              <Form.Group>
-                <Form.Label>
-                  <strong>Buscar país o capital:</strong>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ej: España, Madrid..."
-                  value={busqueda}
-                  onChange={e => setBusqueda(e.target.value)}
+      <div className="filtros-bar">
+        <div className="search-wrapper">
+          <i className="pi pi-search search-icon" />
+          <InputText
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+            placeholder="Buscar país o capital..."
+            className="search-input"
+          />
+        </div>
+        <Dropdown
+          value={regionSeleccionada}
+          onChange={e => setRegionSeleccionada(e.value)}
+          options={regiones}
+          placeholder="Todas las regiones"
+          showClear
+          className="region-dropdown"
+        />
+        <Button
+          label="Limpiar"
+          icon="pi pi-times"
+          severity="secondary"
+          outlined
+          onClick={limpiarFiltros}
+          disabled={!busqueda && !regionSeleccionada}
+        />
+        <span className="resultado-contador">
+          <strong>{paisesFiltrados.length}</strong> / {paises.length} países
+        </span>
+      </div>
+
+      {/* Sin resultados */}
+      {paisesFiltrados.length === 0 && (
+        <div className="no-resultados">
+          <i className="pi pi-globe no-resultados-icon" />
+          <h3>No se encontraron países</h3>
+          <p>Intenta con otros términos o cambia los filtros.</p>
+          <Button label="Limpiar filtros" icon="pi pi-redo" onClick={limpiarFiltros} />
+        </div>
+      )}
+
+      {/* Grid de países */}
+      {paisesFiltrados.length > 0 && (
+        <div className="paises-grid">
+          {paisesFiltrados.map(pais => (
+            <Card
+              key={pais.cca3}
+              header={
+                <img
+                  src={pais.flags?.svg}
+                  alt={pais.flags?.alt || pais.name.common}
+                  className="pais-flag"
+                  onError={e => {
+                    e.target.src = '/assets/img/logo.png';
+                  }}
                 />
-              </Form.Group>
-            </Col>
-            <Col md={5}>
-              <Form.Group>
-                <Form.Label>
-                  <strong>Filtrar por continente:</strong>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={continenteSeleccionado}
-                  onChange={e => setContinenteSeleccionado(e.target.value)}>
-                  <option value="">Todos los continentes</option>
-                  {obtenerContinentes().map(continente => (
-                    <option key={continente} value={continente}>
-                      {continente}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-            <Col md={2} className="d-flex align-items-end">
-              <Button variant="secondary" onClick={limpiarFiltros} className="w-100">
-                Limpiar
-              </Button>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      {/* Contador de resultados */}
-      <p className="text-center text-muted mb-4">
-        Mostrando <strong>{paisesFiltrados.length}</strong> de <strong>{paises.length}</strong> países
-      </p>
-
-      {/* Lista de países */}
-      {paisesFiltrados.length > 0 ? (
-        listarPaises
-      ) : (
-        <div className="alert alert-info text-center" role="alert">
-          No se encontraron países con los filtros seleccionados.
+              }
+              title={pais.name.common}
+              subTitle={pais.name.official}
+              className="pais-card">
+              <div className="pais-badges">
+                {pais.capital?.length > 0 && (
+                  <span className="badge badge-capital">
+                    <i className="pi pi-building" />
+                    {pais.capital[0]}
+                  </span>
+                )}
+                <span className="badge badge-pop">
+                  <i className="pi pi-users" />
+                  {formatPoblacion(pais.population)}
+                </span>
+                <span className="badge badge-region">
+                  <i className="pi pi-globe" />
+                  {pais.region}
+                </span>
+                <span className="badge badge-code">{pais.cca3}</span>
+              </div>
+            </Card>
+          ))}
         </div>
       )}
     </div>
