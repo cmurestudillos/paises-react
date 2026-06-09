@@ -1,40 +1,294 @@
+/* =====================
+   Navbar
+   ===================== */
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  box-shadow: 0 2px 20px rgba(0, 8, 81, 0.25);
+}
+
 .bg-custom {
-  background-image: linear-gradient(15deg, #61dbfb 0%, #80c7d0 100%);
+  background: linear-gradient(90deg, #1cb5e0 0%, #000851 100%);
 }
 
-.btn {
-  flex: 1 1 auto;
-  padding: 10px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
-  border: 1px solid #61dbfb !important;
-  margin: 0 auto;
-}
-
-.btn-4 {
-  background-image: linear-gradient(to right, #80c7d0 0%, #c2f0fb 51%, #61dbfb 100%);
-}
-
-.btn:hover {
-  background-position: right center;
-}
-
-.active{
-  color: white;
-}
-
-.active:hover{
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
-.card-header {
-  padding: .75rem 1.25rem;
-  margin-bottom: 0 !important; 
-  background-color: transparent !important;
-  border-bottom: none;
+.navbar-brand:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* =====================
+   Footer
+   ===================== */
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.footer-copy {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-stack {
+  margin: 0;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* =====================
+   Main container
+   ===================== */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 1.5rem 3rem;
+}
+
+/* =====================
+   Filtros bar
+   ===================== */
+.filtros-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border: 1px solid rgba(0, 8, 81, 0.09);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 8, 81, 0.05);
+  margin-bottom: 1.75rem;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 240px;
+  min-width: 200px;
+}
+
+.search-wrapper .search-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-wrapper .search-input,
+.search-wrapper .p-inputtext {
+  width: 100% !important;
+  padding: 0.65rem 1rem 0.65rem 2.5rem !important;
+  height: 42px;
+}
+
+.resultado-contador {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: #5b6a8a;
+  white-space: nowrap;
+  padding: 0 0.25rem;
+}
+
+.resultado-contador strong {
+  color: #000851;
+  font-weight: 600;
+}
+
+/* =====================
+   Grid de países
+   ===================== */
+.paises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* =====================
+   Tarjeta de país
+   ===================== */
+.pais-flag {
+  width: 100%;
+  height: 155px;
+  object-fit: cover;
+  display: block;
+}
+
+.pais-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+/* =====================
+   Badges
+   ===================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badge .pi {
+  font-size: 0.62rem;
+}
+
+.badge-capital {
+  background: rgba(5, 150, 105, 0.1);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.25);
+}
+
+.badge-pop {
+  background: rgba(28, 181, 224, 0.1);
+  color: #0369a1;
+  border: 1px solid rgba(28, 181, 224, 0.3);
+}
+
+.badge-region {
+  background: rgba(0, 8, 81, 0.07);
+  color: #000851;
+  border: 1px solid rgba(0, 8, 81, 0.18);
+}
+
+.badge-code {
+  background: rgba(0, 0, 0, 0.04);
+  color: #64748b;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.07em;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+/* =====================
+   Estado vacío y error
+   ===================== */
+.no-resultados {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #5b6a8a;
+}
+
+.no-resultados-icon {
+  font-size: 3rem;
+  color: rgba(28, 181, 224, 0.5);
+}
+
+.no-resultados h3 {
+  margin: 0;
+  color: #000851;
+}
+
+.no-resultados p {
+  margin: 0;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 2.5rem;
+}
+
+/* Skeleton spacing */
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+
+/* =====================
+   Error 404
+   ===================== */
+.error-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+  gap: 1rem;
+  text-align: center;
+  color: #5b6a8a;
+}
+
+.error-404 .pi {
+  font-size: 3rem;
+  color: rgba(28, 181, 224, 0.6);
+}
+
+.error-404 h2 {
+  font-size: 4rem;
+  margin: 0;
+  background: linear-gradient(90deg, #1cb5e0, #000851);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================
+   Responsive
+   ===================== */
+@media (max-width: 640px) {
+  .filtros-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resultado-contador {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .paises-grid {
+    grid-template-columns: 1fr;
+  }
 }

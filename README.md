@@ -1,176 +1,87 @@
-# 🌍 Paises React - Countries Explorer
+# Países del Mundo — React
 
-Una aplicación web moderna y responsive desarrollada con React.js + Vite.js que permite explorar información detallada de todos los países del mundo. Incluye búsqueda en tiempo real y filtros por continente.
+SPA que muestra todos los países del mundo. Búsqueda en tiempo real por nombre o capital, filtrado por región, tarjetas con banderas, skeletons de carga y diseño light profesional con gradiente cian-marino.
 
-## ✨ Características
+**Demo en producción:** [https://react-paises-spa.vercel.app](https://react-paises-spa.vercel.app)
 
-- 🔍 **Búsqueda en tiempo real** por nombre de país o capital
-- 🌎 **Filtro por continentes** (África, Asia, Europa, América, Oceanía)
-- 📊 **Información detallada** de cada país:
-  - Capital
-  - Población
-  - Región y subregión
-  - Área territorial
-  - Idiomas oficiales
-- 🎨 **Interfaz moderna y responsive** con Bootstrap
-- 🚀 **Carga rápida** gracias a Vite.js
-- 🎭 **Componentes acordeón** para mejor visualización
-- 🏴 **Banderas de países** con imágenes SVG de alta calidad
+## Stack
 
-## 🛠️ Tecnologías Utilizadas
+| Tecnología | Versión | Uso |
+|-----------|---------|-----|
+| React | 18.3.1 | Framework (hooks) |
+| Vite | 5.4.x | Bundler y dev server |
+| PrimeReact | 10.9.x | Componentes UI |
+| PrimeIcons | 7.0.0 | Iconografía |
+| Tema | lara-dark-teal | CSS pre-compilado |
+| React Router DOM | 6.28.x | Enrutamiento SPA |
+| Axios | 1.8.x | Cliente HTTP |
+| ESLint | 9.x | Flat config |
+| Prettier | 3.6.x | Formateo |
+| pnpm | 11.5.2 | Gestor de paquetes |
 
-- [React.js](https://reactjs.org/) - Librería de JavaScript para construir interfaces de usuario
-- [Vite.js](https://vitejs.dev/) - Build tool y dev server ultrarrápido
-- [React Bootstrap](https://react-bootstrap.github.io/) - Componentes de Bootstrap para React
-- [React Router DOM](https://reactrouter.com/) - Enrutamiento para aplicaciones React
-- [Axios](https://axios-http.com/) - Cliente HTTP para peticiones a la API
-- [Font Awesome](https://fontawesome.com/) - Iconos vectoriales
+## Instalación
 
-## 📦 Instalación
-
-### Prerrequisitos
-
-- Node.js (versión 20 o superior)
-- npm o yarn
-
-### Pasos de instalación
-
-1. Clona el repositorio:
 ```bash
-git clone https://github.com/cmurestudillos/paises-react.git
+pnpm install
 ```
 
-2. Navega al directorio del proyecto:
+## Scripts
+
 ```bash
-cd paises-react
+pnpm dev         # Vite dev server — http://localhost:3000
+pnpm build       # Vite build — dist/
+pnpm preview     # Preview del build
+pnpm lint        # ESLint — 0 errores
+pnpm lint:fix    # Corregir y formatear automáticamente
 ```
 
-3. Instala las dependencias:
-```bash
-npm install
-```
+## Características
 
-4. Inicia el servidor de desarrollo:
-```bash
-npm run dev
-```
+- Grid responsivo de tarjetas con bandera, nombre oficial, capital, población, región y código ISO
+- Búsqueda en tiempo real por nombre, nombre oficial o capital
+- Filtro por región con dropdown y opción de limpiar
+- Skeletons de carga: 6 placeholders animados mientras llega la API
+- Badges con color semántico por tipo de dato
+- Gradiente `linear-gradient(90deg, #d53369 0%, #daae51 100%)` en navbar y acentos
 
-5. Abre tu navegador en `http://localhost:3000`
+## API
 
-## 🚀 Uso
+`GET https://countries-api-service.vercel.app/api/countries`
 
-### Búsqueda de países
-Escribe el nombre de un país o su capital en el campo de búsqueda para filtrar los resultados en tiempo real.
-
-### Filtrar por continente
-Selecciona un continente del menú desplegable para ver únicamente los países de esa región.
-
-### Ver detalles
-Haz clic en el nombre de cualquier país para expandir su información detallada.
-
-### Limpiar filtros
-Utiliza el botón "Limpiar" para resetear todos los filtros aplicados.
-
-## 📁 Estructura del Proyecto
+## Estructura
 
 ```
-paises-react/
-├── src/
-│   ├── api/
-│   │   └── endpoint.js          # Configuración de la API
-│   ├── components/
-│   │   ├── home/
-│   │   │   └── HomeComponent.jsx    # Componente principal
-│   │   └── shared/
-│   │       ├── navbar/
-│   │       │   └── NavbarComponent.jsx
-│   │       ├── footer/
-│   │       │   └── FooterComponent.jsx
-│   │       └── error/
-│   │           └── ErrorComponent.jsx
-│   ├── routes/
-│   │   └── Router.jsx           # Configuración de rutas
-│   ├── assets/
-│   │   └── img/
-│   ├── App.jsx
-│   ├── App.css
-│   ├── main.jsx
-│   └── index.css
-├── public/
-├── package.json
-└── README.md
+src/
+├── api/endpoint.js                  # URL de la API
+├── assets/img/logo.png
+├── components/
+│   ├── home/HomeComponent.jsx       # Grid + filtros + badges + skeletons
+│   └── shared/
+│       ├── navbar/NavbarComponent.jsx
+│       ├── footer/FooterComponent.jsx
+│       └── error/ErrorComponent.jsx
+├── routes/Router.jsx
+├── App.jsx / App.css                # Estilos globales + layout
+├── index.css                        # Variables, PrimeReact overrides
+└── main.jsx                         # PrimeReactProvider + CSS imports
 ```
 
-## 🌐 API Utilizada
+## Notas de configuración
 
-Este proyecto utiliza la API de países alojada en:
-```
-https://countries-api-service.vercel.app/api/countries
-```
+### ESLint 9 flat config
+Usa `eslint.config.js`. Los archivos `.eslintrc.*` y `.eslintignore` han sido eliminados.
 
-La API proporciona información completa de 240 países, incluyendo:
-- Nombres (común y oficial)
-- Banderas y escudos
-- Información geográfica
-- Datos demográficos
-- Idiomas y monedas
-- Y mucho más...
+### Build output: `dist/`
+`vite.config.js` usa `outDir: 'dist'` para coincidir con `vercel.json` (`outputDirectory: "dist"`).
 
-## 🎨 Personalización
-
-### Cambiar colores del tema
-
-Edita el archivo `src/App.css` para personalizar los colores del gradiente:
-
-```css
-.bg-custom {
-  background-image: linear-gradient(15deg, #61dbfb 0%, #80c7d0 100%);
-}
+### PrimeReact — CSS imports
+Los temas CSS se importan en `main.jsx` antes de los estilos propios:
+```js
+import 'primereact/resources/themes/lara-dark-teal/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 ```
 
-### Agregar más filtros
+## Autor
 
-Puedes extender la funcionalidad añadiendo filtros adicionales en `HomeComponent.jsx`:
-- Por idioma
-- Por población
-- Por área territorial
-- Por moneda
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Para cambios importantes:
-
-1. Haz un Fork del proyecto
-2. Crea una rama para tu característica (`git checkout -b feature/AmazingFeature`)
-3. Haz commit de tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📝 Scripts Disponibles
-
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Crea la versión de producción
-- `npm run preview` - Previsualiza la versión de producción
-- `npm run lint` - Ejecuta el linter
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 👤 Autor
-
-**Carlos Mur**
-
-- GitHub: [@tu-usuario](https://github.com/cmurestudillos)
-
-## 🙏 Agradecimientos
-
-- API de países proporcionada por [Countries API Service](https://countries-api-service.vercel.app)
-- Iconos por [Font Awesome](https://fontawesome.com/)
-- Componentes UI por [React Bootstrap](https://react-bootstrap.github.io/)
-
----
-
-⭐️ Si te gusta este proyecto, ¡dale una estrella en GitHub!
-
-**Desarrollado con ❤️ usando React + Vite
+Carlos Mur
